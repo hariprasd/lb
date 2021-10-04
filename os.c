@@ -1,7 +1,9 @@
 Banker :
- #include <stdio.h>
+
+#include <stdio.h>
 int main()
 {
+  // change values of m  and n according to your input choice :)
   
     int n, m, i, j, k;
     n = 5; 
@@ -57,12 +59,69 @@ int main()
     printf("\n\n");
   
     return (0);
-  
-
+ 
 }
-  
 
-Bestfit:
+
+
+FirstFit :
+
+#include<stdio.h>
+struct process
+{
+	int ps;
+	int flag;
+}p[50];
+struct sizes{
+	int size;
+	int alloc;
+}s[5];
+	int main()
+	{
+		int i=0,np=0,n=0,j=0;
+		printf("\n first fit\n");
+		printf("enter the number of blocks\t");
+		scanf("%d",&n);
+		printf("\t\t\n Enter the size for %d block\n",n);
+		for(i=0;i<n;i++)
+		{
+			printf("Enter the size for %d block\t",i);
+			scanf("%d",&s[i].size);
+		}
+		printf("enter the no. of process\t");
+		scanf("%d",&np);
+		printf("\nenter the size of %d processors\t\n",np);
+		for(i=0;i < np; i++)
+		{
+			printf("Enter the size of %d process\t",i);
+			scanf("%d",&p[i].ps);
+		}
+		printf("allocation of block using first fit is as follows\n");
+		printf("process\t process size \t blocks\n");
+		for(i=0;i<np;i++){
+			for(j=0;j<n;j++){
+				
+					if(p[i].flag!=1){
+						if(p[i].ps<=s[j].size){
+							if(!s[j].alloc){
+								p[i].flag=1;
+								s[j].alloc=1;
+								printf("\t%d\t%d\t%d\t\n",i,p[i].ps,s[j].size);
+							}
+						
+					}	
+				}
+			}
+		}
+		for(i=0;i < np;i++){
+			if(p[i].flag!=1)
+			printf("\nsorry the process %d must wait as there is no sufficent memory",i);
+		}
+	}
+
+
+
+BestFit :
 
 #include<stdio.h>
 #define MAX 20
@@ -111,83 +170,81 @@ printf("\n \n %d \t\t%d\t\t%d\t\t%d",i,fsize[i],fflag[i],bsize[fflag[i]]);
 }
 
 
-FirstFit :
+Semaphore :
 
 #include<stdio.h>
-struct process
+#include<stdlib.h>
+int n=0,buffersize=0,currentsize=0;
+void producer()
 {
-int ps;
-int flag;
-} p[50];
-struct sizes
-{
-int size;
-int alloc;
-}
-s[5];
-int main()
-{
-int i=0,np=0,n=0,j=0;
-printf("\n first fit");
-printf("\n");
-printf("enter the number of blocks \t");
+printf("\nEnter number of elements to be produced: ");
 scanf("%d",&n);
-printf("\t\t\n enter the size for %d blocks\n",n);
-for(i=0;i<n;i++)
+if(0<=(buffersize-(currentsize+n)))
 {
-printf("enter the size for %d block \t",i);
-scanf("%d",&s[i].size);
+currentsize+=n;
+printf("%d Elements produced by producer where buffersize is %d\n",currentsize,buffersize);
 }
-printf("\n\t\t enter the number of process\t",i);
-scanf("%d",&np);
-printf("enter the size of %d processors !\t",np);
-printf("\n");
-for(i=0;i<np;i++)
+else
+printf("\nBuffer is not sufficient\n");
+}
+void consumer()
 {
-printf("enter the size of process %d\t",i);
-scanf("\n%d",&p[i].ps);
-}
-printf("\n\t\t Allocation of blocks using first fit is as follows\n");
-printf("\n\t\t process \t process size\t blocks\n");
-for(i=0;i<np;i++)
+int x;
+printf("\nEnter no. of elements to be consumed: ");
+scanf("%d",&x);
+if(currentsize>=x)
 {
-for(j=0;j<n;j++)
+currentsize-=x;
+printf("\nNumber of elements consumed: %d, Number of Elements left: %d", x, currentsize);
+}
+else
 {
-if(p[i].flag!=1)
+printf("\nNumber of Elements consumed should not be greater than Number of Elements produced\n");
+}
+}
+void main()
 {
-if(p[i].flag!=1)
+int c;
+printf("\nEnter maximum size of buffer:");
+scanf("%d",&buffersize);
+do
 {
-if(p[i].ps<=s[j].size)
+printf("\n1.Producer 2.Consumer 3.Exit");
+printf("\nEnter Choice:");
+scanf("%d",&c);
+switch(c)
 {
-if(!s[j].alloc)
-{
-p[i].flag=1;
-s[j].alloc=1;
-printf("\n\t\t\t %d\t\t\t\t%d\t\t\t%d\t",i,p[i].ps,s[j].size);
+case 1:
+if(currentsize >= buffersize)
+printf("\nBuffer is full. Cannot produce");
+else
+producer();
+break; case 2:
+if(currentsize <= 0)
+printf("\nBuffer is Empty. Cannot consume");
+else
+consumer();
+break;
+default:
+exit(0);
+break;
+
 }
 }
+while(c!=3);
 }
-}
-}
-}
-for(i=0;i<np;i++)
-{
-if(p[i].flag!=1)
-printf(" \n sorry !!!!!!!process %d must wait as there is no sufficient memory",i);
-}
-}
+
 
 
 FCFS :
 
 #include<stdio.h>
-#include<conio.h>
+int WT_TAT (int *, int *);
 int p[30],bt[30],tot_tat=0,wt[30],n,tot_wt=0,tat[30],FCFS_wt=0,FCFS_tat=0;
 float awt,avg_tat,avg_wt;
 void main()
 {
 int i;
-clrscr();
 printf("\nEnter the no.of processes \n");
 scanf("%d",&n);
 printf("Enter burst time for each process\n");
@@ -202,7 +259,6 @@ printf("\n\nTotal Turn around Time:%d",FCFS_tat);
 printf("\nAverage Turn around Time :%d ", FCFS_tat/n);
 printf("\nTotal Waiting Time:%d",FCFS_wt);
 printf("\nTotal avg. Waiting Time:%d",FCFS_wt/n);
-getch();
 }
 int WT_TAT(int *a, int *b)
 {
@@ -229,16 +285,18 @@ printf("\nprocess[%d]\t\t%d\t\t%d\t\t%d",p[i],bt[i],tat[i],wt[i]);
 return 0;
 }
 
+
 SJF :
 
 #include<stdio.h>
-#include<conio.h>
+int WT_TAT (int *, int *);
+int sort();
+int swap(int *, int *);
 int p[30],bt[30],tot_tat=0,wt[30],n,tot_wt=0,tat[30],SJF_wt=0,SJF_tat=0;
 float awt,avg_tat,avg_wt;
 void main()
 {
 int i;
-clrscr();
 printf("\nEnter the no.of processes \n");
 scanf("%d",&n);
 printf("Enter burst time for each process\n");
@@ -253,7 +311,6 @@ printf("\n\nTotal Turn around Time:%d",SJF_tat);
 printf("\nAverage Turn around Time :%d ", SJF_tat/n);
 printf("\nTotal Waiting Time:%d",SJF_wt);
 printf("\nTotal avg. Waiting Time:%d",SJF_wt/n);
-getch();
 }
 int sort()
 {
@@ -302,69 +359,4 @@ printf("\nPROCESS\t\tBURST TIME\tTURN AROUND TIME\tWAITING TIME");
 for(i=0; i<n; i++)
 printf("\nprocess[%d]\t\t%d\t\t%d\t\t%d",p[i]+1,bt[i],tat[i],wt[i]);
 return 0;
-}
-
-
-Semaphore :
-
-#include<stdio.h>
-int n=0,buffersize=0,currentsize=0;
-void producer()
-{
-printf("\nEnter number of elements to be produced: ");
-scanf("%d",&n);
-if(0<=(buffersize-(currentsize+n)))
-{
-currentsize+=n;
-printf("%d Elements produced by producer where buffersize is %d\n", currentsize,
-buffersize);
-}
-else
-printf("\nBuffer is not sufficient\n");
-}
-void consumer()
-{
-int x;
-printf("\nEnter no. of elements to be consumed: ");
-scanf("%d",&x);
-if(currentsize>=x)
-{
-currentsize-=x;
-printf("\nNumber of elements consumed: %d, Number of Elements left: %d", x, currentsize);
-}
-else
-{
-printf("\nNumber of Elements consumed should not be greater than Number of Elements
-produced\n");
-}
-}
-void main()
-{
-int c;
-printf("\nEnter maximum size of buffer:");
-scanf("%d",&buffersize);
-do
-{
-printf("\n1.Producer 2.Consumer 3.Exit");
-printf("\nEnter Choice:");
-scanf("%d",&c);
-switch(c)
-{
-case 1:
-if(currentsize >= buffersize)
-printf("\nBuffer is full. Cannot produce");
-else
-producer();
-break; case 2:
-if(currentsize <= 0)
-printf("\nBuffer is Empty. Cannot consume");
-else
-consumer();
-break;
-default:
-exit();
-break;
-}
-}
-while(c!=3);
 }
