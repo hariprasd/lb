@@ -67,57 +67,46 @@ int main()
 FirstFit :
 
 #include<stdio.h>
-struct process
+ 
+void main()
 {
-	int ps;
-	int flag;
-}p[50];
-struct sizes{
-	int size;
-	int alloc;
-}s[5];
-	int main()
-	{
-		int i=0,np=0,n=0,j=0;
-		printf("\n first fit\n");
-		printf("enter the number of blocks\t");
-		scanf("%d",&n);
-		printf("\t\t\n Enter the size for %d block\n",n);
-		for(i=0;i<n;i++)
-		{
-			printf("Enter the size for %d block\t",i);
-			scanf("%d",&s[i].size);
-		}
-		printf("enter the no. of process\t");
-		scanf("%d",&np);
-		printf("\nenter the size of %d processors\t\n",np);
-		for(i=0;i < np; i++)
-		{
-			printf("Enter the size of %d process\t",i);
-			scanf("%d",&p[i].ps);
-		}
-		printf("allocation of block using first fit is as follows\n");
-		printf("process\t process size \t blocks\n");
-		for(i=0;i<np;i++){
-			for(j=0;j<n;j++){
-				
-					if(p[i].flag!=1){
-						if(p[i].ps<=s[j].size){
-							if(!s[j].alloc){
-								p[i].flag=1;
-								s[j].alloc=1;
-								printf("\t%d\t%d\t%d\t\n",i,p[i].ps,s[j].size);
-							}
-						
-					}	
-				}
-			}
-		}
-		for(i=0;i < np;i++){
-			if(p[i].flag!=1)
-			printf("\nsorry the process %d must wait as there is no sufficent memory",i);
-		}
-	}
+int blocksize[10], processsize[10], bno, pno, flag[10], allocation[10], i,j;
+ 
+for(i = 0; i < 10; i++)
+{
+flag[i] = 0;
+allocation[i] = -1;
+}
+printf("Enter no. of blocks: ");
+scanf("%d", &bno);
+printf("\nEnter size of each block: ");
+for(i = 0; i < bno; i++)
+scanf("%d", &blocksize[i]);
+ 
+printf("\nEnter no. of processes: ");
+scanf("%d", &pno);
+printf("\nEnter size of each process: ");
+for(i = 0; i < pno; i++)
+scanf("%d", &processsize[i]);
+for(i = 0; i < pno; i++)        
+for(j = 0; j < bno; j++)
+if(flag[j] == 0 && blocksize[j] >= processsize[i])
+{
+allocation[j] = i;
+flag[j] = 1;
+break;
+}
+printf("\nBlock no.\tsize\t\tprocess no.\t\tsize");
+for(i = 0; i < bno; i++)
+ 
+{
+printf("\n%d\t\t%d\t\t", i+1, blocksize[i]);
+if(flag[i] == 1)
+printf("%d\t\t\t%d",allocation[i]+1,processsize[allocation[i]]);
+else
+printf("Not allocated");
+}
+}
 
 
 
