@@ -67,45 +67,43 @@ int main()
 FirstFit :
 
 #include<stdio.h>
- 
-void main()
-{
-int blocksize[10], processsize[10], bno, pno, flag[10], allocation[10], i,j;
- 
-for(i = 0; i < 10; i++)
-{
-flag[i] = 0;
-allocation[i] = -1;
-}
-printf("Enter no. of blocks: ");
-scanf("%d", &bno);
-printf("\nEnter size of each block: ");
-for(i = 0; i < bno; i++)
-scanf("%d", &blocksize[i]);
- 
-printf("\nEnter no. of processes: ");
-scanf("%d", &pno);
-printf("\nEnter size of each process: ");
-for(i = 0; i < pno; i++)
-scanf("%d", &processsize[i]);
-for(i = 0; i < pno; i++)        
-for(j = 0; j < bno; j++)
-if(flag[j] == 0 && blocksize[j] >= processsize[i])
-{
-allocation[j] = i;
-flag[j] = 1;
-break;
-}
-printf("\nBlock no.\tsize\t\tprocess no.\t\tsize");
-for(i = 0; i < bno; i++)
- 
-{
-printf("\n%d\t\t%d\t\t", i+1, blocksize[i]);
-if(flag[i] == 1)
-printf("%d\t\t\t%d",allocation[i]+1,processsize[allocation[i]]);
-else
-printf("Not allocated");
-}
+void main(){
+    int n,i,p[30], bt[30] ,tat[30], wt[30], tot_tat = 0, tot_wt = 0;
+    float avg_tat, avg_wt;
+    printf("Enter the no. of processes :");
+    scanf("%d",&n);
+    printf("Enter burst time for each process : ");
+    for(i = 0 ; i < n ; i++){
+    scanf("%d",&bt[i]);
+    }
+    for(i = 0; i< n;i ++){
+        if( i == 0){
+            tat[i] = bt[i];
+        }
+        else{
+        tat[i] = tat[i-1] + bt[i];
+    }
+        tot_tat += tat[i];
+    }
+    for(i = 0 ; i < n ; i++){
+        if( i == 0 ){
+            wt[i] == 0;
+        }
+        else{
+            wt[i] = tat[i] - bt[i];
+        }
+        tot_wt += wt[i];
+    }
+     avg_tat = tot_tat/(float)n;
+     avg_wt = tot_wt/(float)n;
+    printf("PROCESS  \t\t BURST TIME \t\t TAT \t\t WT");
+    for(i = 0 ; i < n ; i++){
+        printf("\nProcess[%d] \t\t %d  \t\t\t %d \t\t %d \n",i, bt[i], tat[i], wt[i]);
+    }
+    printf("\n Total TURN AROUND TIME = %d", tot_tat);
+    printf("\n Average TURN AROUND TIME = %f", avg_tat);
+    printf("\n Total WAITING TIME = %d", tot_wt);
+    printf("\n Average WAITING TIME = %f", avg_wt);
 }
 
 
