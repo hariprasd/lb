@@ -79,8 +79,7 @@ printf("Enter no of process ");
 scanf("%d",&pno);
 printf("Enter no. of resourses ");
 scanf("%d",&r);
-printf("Enter
-Available Resourse of each type ");
+printf("Enter Available Resourse of each type ");
 for(i=0;i<r;i++){
 scanf("%d",&aval[i]);
 }
